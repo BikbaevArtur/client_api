@@ -4,7 +4,7 @@ package ru.bikbaev.client_v2.repository;
 import ru.bikbaev.client_v2.dto.DTO;
 import ru.bikbaev.client_v2.dto.DTOCompany;
 
-import java.sql.Connection;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

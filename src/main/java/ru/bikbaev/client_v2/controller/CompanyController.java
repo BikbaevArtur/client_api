@@ -34,7 +34,7 @@ public class CompanyController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        controller.doGetController(req,resp,jdbcRepositoryByClient);
+        controller.doGetController(req, resp, jdbcRepositoryByClient);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class CompanyController extends HttpServlet {
 
         GsonBuilder gsonBuilder = new GsonBuilder().setPrettyPrinting();
         Gson gson = gsonBuilder.create();
-        DTOCompany dto = gson.fromJson(String.valueOf(JsonMapper.doPost(req)),DTOCompany.class);
+        DTOCompany dto = gson.fromJson(String.valueOf(JsonMapper.doPost(req)), DTOCompany.class);
 
         jdbcRepositoryByClient.save(dto);
 
@@ -51,6 +51,6 @@ public class CompanyController extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        controller.doDelete(req,jdbcRepositoryByClient);
+        controller.doDelete(req, jdbcRepositoryByClient);
     }
 }

@@ -1,7 +1,7 @@
 package ru.bikbaev.client_v2.dto;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
+
 import lombok.Getter;
 import lombok.Setter;
 
