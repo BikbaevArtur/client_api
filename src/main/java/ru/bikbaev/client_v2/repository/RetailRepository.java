@@ -1,0 +1,89 @@
+package ru.bikbaev.client_v2.repository;
+
+import ru.bikbaev.client_v2.dto.DTO;
+import ru.bikbaev.client_v2.dto.DTORetail;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class RetailRepository implements JdbcRepositoryByClient {
+    @Override
+    public Iterable<DTO> findAll() {
+        List<DTO> dtoList = new ArrayList<>();
+        String sql = "SELECT * FROM retail";
+        try (PreparedStatement preparedStatement = connect().prepareStatement(sql)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                DTO dto = new DTORetail(
+                        resultSet.getInt("id"),
+                        resultSet.getString("firstName"),
+                        resultSet.getString("lastName"));
+                dtoList.add(dto);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return dtoList;
+    }
+
+    @Override
+    public DTO findById(int id) {
+        String sql = "select * from retail where id = ?";
+        try (PreparedStatement preparedStatement = connect().prepareStatement(sql)) {
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return new DTORetail(
+                        resultSet.getInt("id"),
+                        resultSet.getString("firstName"),
+                        resultSet.getString("lastName"));
+            } else {
+                return null;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    @Override
+    public <S extends DTO> S save(S entity) {
+        String sql = "INSERT into retail values (default,?,?,default)";
+        try (PreparedStatement preparedStatement = connect().prepareStatement(sql)) {
+            preparedStatement.setString(1, entity.getFirsName());
+            preparedStatement.setString(2, entity.getLastName());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return entity;
+    }
+
+    @Override
+    public void deleteById(int id) {
+        String sql = "DELETE from retail where id = ?";
+        try (PreparedStatement preparedStatement = connect().prepareStatement(sql)) {
+            preparedStatement.setInt(1, id);
+
+            int affectedRow = preparedStatement.executeUpdate();
+            if (affectedRow == 0) {
+                System.out.printf("Не было удалено id %d , ее не существует \n", id);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    private Connection connect() {
+        try {
+            return ConnectionDataBase.getConnection();
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+    }
+}
