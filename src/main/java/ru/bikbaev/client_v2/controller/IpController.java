@@ -52,6 +52,6 @@ public class IpController extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        controller.doDelete(req, jdbcRepositoryByClient);
+        controller.doDelete(req,resp, jdbcRepositoryByClient);
     }
 }
