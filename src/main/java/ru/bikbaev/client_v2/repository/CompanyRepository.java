@@ -16,7 +16,7 @@ public class CompanyRepository implements JdbcRepositoryByClient {
     @Override
     public Iterable<DTO> findAll() {
         List<DTO> dtoList = new ArrayList<>();
-        String sql = "SELECT * FROM company";
+        String sql = "SELECT * FROM company"; // лучше в константы выносить
 
         try (PreparedStatement preparedStatement = ConnectionDataBase
                 .getConnection()
@@ -24,8 +24,8 @@ public class CompanyRepository implements JdbcRepositoryByClient {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 DTOCompany dtoCompany = new DTOCompany(
-                        resultSet.getInt("id"),
-                        resultSet.getString("name"),
+                        resultSet.getInt("id"), // от эту логику можно в маппер перенести, потому что тут просто обхект собирается
+                        resultSet.getString("name"),// либо метод факбрику прописать в самой дто
                         resultSet.getString("inn"));
                 dtoList.add(dtoCompany);
             }
